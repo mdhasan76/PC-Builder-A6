@@ -38,7 +38,7 @@ const run = async () => {
     res.send(result);
   });
 };
-
+// check
 run().catch((err) => console.log(err));
 
 app.listen(port, () => {
