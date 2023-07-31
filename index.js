@@ -44,6 +44,13 @@ const run = async () => {
     res.send({ status: true, data: randomProductsArr });
   });
 
+  app.get("/allproducts", async (req, res) => {
+    const cursor = productCollection.find({});
+    const products = await cursor.toArray();
+
+    res.send({ status: true, data: products });
+  });
+
   app.get("/product/:id", async (req, res) => {
     const id = req.params.id;
     console.log(id);
