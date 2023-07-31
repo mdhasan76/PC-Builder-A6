@@ -15,7 +15,6 @@ app.get("/", (req, res) => {
 });
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.mj4ed9j.mongodb.net/?retryWrites=true&w=majority`;
-console.log(uri);
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -34,7 +33,18 @@ const run = async () => {
 
   app.get("/product/:id", async (req, res) => {
     const id = req.params.id;
-    const result = await productCollection.findOne({ _id: id });
+    console.log(id);
+    const result = await productCollection.findOne({ _id: new ObjectId(id) });
+    res.send(result);
+  });
+
+  app.get("/category/:category", async (req, res) => {
+    const categoryName = req.params.category;
+    const result = await productCollection
+      .find({
+        category: categoryName,
+      })
+      .toArray();
     res.send(result);
   });
 };
