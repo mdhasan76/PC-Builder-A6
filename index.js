@@ -21,14 +21,27 @@ const client = new MongoClient(uri, {
   serverApi: ServerApiVersion.v1,
 });
 
+// genarate random number from 0-18
+const genarateRendomNumber = () => Math.floor(Math.random(1) * 18);
+
 const run = async () => {
   const productCollection = client.db("pc-builder").collection("products");
 
   app.get("/products", async (req, res) => {
     const cursor = productCollection.find({});
-    const product = await cursor.toArray();
+    const products = await cursor.toArray();
 
-    res.send({ status: true, data: product });
+    const randomIndex = new Set();
+    while (randomIndex.size < 8) {
+      const newIndex = genarateRendomNumber();
+      randomIndex.add(newIndex);
+    }
+    const resultArray = Array.from(randomIndex);
+    const randomProductsArr = resultArray.map(
+      (randomIndex) => products[randomIndex]
+    );
+
+    res.send({ status: true, data: randomProductsArr });
   });
 
   app.get("/product/:id", async (req, res) => {
